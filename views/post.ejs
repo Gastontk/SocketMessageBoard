@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#comment_div {
+			background-color: linen;
+		}
+	</style>
+</head>
+<body>
+	<a href="/">Go back to the main window</a>
+		<h1>View for a single post</h1>
+		<h2> Name: <%= post.name %></h2>
+		<h2> Message: <%= post.message %></h2>
+		<% console.log(post.name) %>
+		<% console.log('comments: ', post) %>
+<!-- 	<div id = 'comment_div'>
+		<% var count = 0 %>
+		<% for( x in post.comments){ %>
+		<% count ++ %>
+		<h1>--------------</h1>
+		Count is: <%= count %>
+		<%= post.comments[x].comment_name %> <br>
+		<%= post.comments[x].comment_comment %> <br> <br><br>
+
+	 	<% } %>
+	</div> -->
+
+	
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Socket Chat</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<style>
+		.delete_comment_button{
+			margin-left: 60%;
+			margin-bottom: 5%;
+
+
+		}
+		.delete_post_button {
+			margin-right: 5%;
+		}
+		#new_message_window{
+			width: 200px;
+			height:  200px;
+			border: 2px solid black;
+			display: inline-block;
+			display: none;
+ 
+
+
+		}
+		#new_message{
+			background-color: lightblue;
+			/*border: solid green 1px;*/
+			border: solid darkgrey 5px;
+			width: auto;
+			max-width: 40%;
+			padding: 10px;
+			margin-left: 10px;
+			display: inline-block;
+			margin-bottom: 10px;
+
+		}
+		body{
+			background-color: lightgrey
+
+
+
+		}
+		h1 {
+			margin-left: 100px;
+		}
+
+		#comments {
+			background-color: linen;
+			margin-left: 100px;
+			border: solid pink;
+			padding: 10px;
+			width: 60%;
+
+		}
+		#post_comment {
+			margin-left: 100px;
+		}
+		#ind_comments {
+			background-color: lightgrey;
+			margin-left: 100px;
+			width: 80%;
+		}
+		#error {
+			vertical-align: top;
+			background-color: red;
+			border: solid darkgrey 5px;
+			padding: 10px;
+			/*margin-bottom: 30px;*/
+
+			height: auto;
+			width: auto;
+			max-width: 50%;
+			min-height: 200px;
+
+			display: none;
+			margin-left: 10px;
+			overflow: scroll;
+		}
+		.error {
+			color: white;
+		}
+	</style>
+	<script>
+		$('document').ready(function(){
+
+			console.log('document is now ready');
+			var socket= io.connect();
+			socket.on('connection_return', function(data){
+				console.log(' got connection_return ');
+
+
+			});
+			socket.on('new_post', function(data){
+				console.log('got test return after new message.');
+
+			});
+			socket.on('new_post_return', function(data){
+				console.log('new_post_return recieved', data.name, data.message, data.id);
+				$('#myHeadline').css('color', 'red');
+				var changeDiv = '.'+data.id;
+				// console.log('Class name is: ', changeDiv);
+				window.location = "/";
+
+
+
+			});
+			socket.on('refresh', function(){
+				window.location = "/";
+
+
+			})
+			socket.on('new_comment_return', function(data){
+
+				console.log('new_comment_return recieved, data is ', data.name, data.comment, data.id);
+					var myDivHtml = '<h1 style="margin: 0px">'+data.name+' says:</h1><br> <p>'+data.comment +'</p>';
+					document.title = (data.name + ' is talking.');
+					console.log('myDivHtml is', myDivHtml);
+					// $('#error').text('<h1> It worked!!!!!!</h1>');
+					$('#error').html(myDivHtml);
+
+
+
+					$('#error').css({'display':'inline-block', 'height':'auto', 'width': 'auto' });
+
+						$('#error').css({opacity: 0, visibility: "visible", color:'white', backgroundColor: 'lightgreen	'}).animate({opacity: 1}, 1000);
+						setTimeout(function(){
+							$('#error').css({opacity: 1, visibility: "visible"}).animate({opacity: 0}, 2000);
+						}, 3000);
+
+
+
+
+
+				// alert('new commment from '+ data );
+				setTimeout(function(){
+					window.location= '/'
+
+				}, 5000); 
+			});
+
+
+
+
+
+
+			 <% if (typeof(errors) != 'undefined' && PostOrCommentError === 'postError'){ %>
+			 	// for(var i=0; i< 5; i++){
+					 	setTimeout(function(){
+					 		$('#new_message').css('border', 'solid red 5px')
+
+
+
+					 	}, 300)
+					 	setTimeout(function(){
+					 		$('#new_message').css('border', 'solid darkgrey 5px')
+
+
+					 	}, 600)
+					 	setTimeout(function(){
+					 		$('#new_message').css('border', 'solid red 5px')
+
+
+					 	}, 900)
+					 	setTimeout(function(){
+					 		$('#new_message').css('border', 'solid orange 5px')
+
+
+					 	}, 1200)
+					 // }
+					 	$('#error').css('display', 'inline-block');
+
+						$('#error').css({opacity: 0, visibility: 'visible'}).animate({opacity: 1}, 3000);
+						setTimeout(function(){
+							$('#error').css({opacity: 1, visibility: "visible"}).animate({opacity: 0}, 3000);
+						}, 3000)
+
+
+								
+
+
+
+
+						console.log('Yup, errors');
+						var nameVar = '<%= fixName %>';
+						console.log('name passed is ', nameVar);
+						var commentVar ='<%= fixMessage %>';
+						console.log('comment passed is', commentVar)
+						// console.log('<%=fixName%>');
+						$('#nameLabel').val(nameVar);
+						$('#commentBox').val(commentVar);
+						console.log('trying to set class red to color:red;');
+						$('.red_post').css('color', 'red');
+
+						// $('#nameLabel').css('background-color', 'pink')
+						// $('#nameLabel').css('color', 'green')
+						// $('textarea').css('background-color', 'pink')
+
+			 <%} else if (typeof(errors) != 'undefined' && PostOrCommentError === 'commentError'){ %>
+						// console.log('comment error occured ', fixCommentName, fixCommentComment);
+						// console.log('req.response is: ', req.response);
+						console.log('id is : <%=id%>');
+
+						setTimeout(function(){
+					 		$('#new_comment<%=id %>').css('border', 'solid red 5px')
+					 	}, 300)
+					 	setTimeout(function(){
+					 		$('#new_comment<%=id %>').css('border', 'solid darkgrey 5px')
+					 	}, 600)
+					 	setTimeout(function(){
+					 		$('#new_comment<%=id %>').css('border', 'solid red 5px')
+					 	}, 900)
+					 	setTimeout(function(){
+					 		$('#new_comment<%=id %>').css('border', 'solid orange 5px')
+					 	}, 1200)
+						$('#error').css('display', 'inline-block');
+
+						$('#error').css({opacity: 0, visibility: "visible"}).animate({opacity: 1}, 3000);
+						setTimeout(function(){
+							$('#error').css({opacity: 1, visibility: "visible"}).animate({opacity: 0}, 3000);
+						}, 3000);
+						console.log('Yup, errors');
+						$('.red_comment').css('color', 'red');
+						var commentNameVar = '<%= fixCommentName %>';
+						var commentCommentVar = '<%= fixCommentComment %>';
+						
+						console.log('commentNameVar is: ', commentNameVar,' and commentCommentVar is: ', commentCommentVar);
+						$('#comment_name_input'+'<%=id%>').val(commentNameVar);
+						$('#comment_comment_input'+'<%=id%>').val(commentCommentVar);
+
+
+
+
+
+
+			<%} %>
+
+		})
+	</script>
+</head>
+<body>
+		<div id= 'divToMessWith'>
+			
+
+
+		</div>
+
+ <a href=""></a>
+	<div id ='new_message' >
+		<form action="/new_message" method='post' role='form'>
+			<label for="name"  class ='red_post'>Name:</label><br>
+			<input class="form-control" type="text" name ='name' id= 'nameLabel'> <br>
+			<label for="message" class ='red_post'>Message:</label><br>
+			<!-- <input type="text" name='message'> <br> -->
+			<textarea class="form-control" name="message" id="commentBox" cols="30" rows="5" id ='commentLabel'></textarea><br> <br>
+			<input type="submit" class="btn btn-primary" value='Submit Post'>
+		</form>
+	</div> 	
+	<div  id ='new_message_window'></div>
+	<div id = 'error' class ='hideMe'>
+
+		 <% if(typeof(errors) != 'undefined' ) { %>
+
+
+		 	<h2 class = 'error'>The following errors must be corrected:</h2>
+		     <% for (x in errors) { %>
+		      <h3 class = 'error'><%= errors[x] %></h3>
+
+		     <% } %>
+		 <% } %>
+	</div><br>
+
+		<% for(x in posts){ %>
+
+
+			<div id ='comments' class ='<%=posts[x].id%>' >
+
+
+
+
+				<h2><%=posts[x].name %> says:</h2>
+				<h3><%=posts[x].message %></h3>
+				<form action='/post/<%=posts[x].id%>' method='post'>
+					<input class ='delete_post_button btn btn-danger' type="submit" value='Delete this post'>
+				</form>
+				<h3 style ='marginleft: 50px;'>----Comments:----</h3>
+			
+
+				<% for(i=0; i < posts[x].comments.length; i++){ %>
+
+
+					<div id ='ind_comments' class ='<%=posts[x]%>'>
+						<h3 style='margin-left: 0px;'><%= posts[x].comments[i].comment_name %> says:</h3>
+					<h4>	<p id ='post_comment'><%= posts[x].comments[i].comment_comment %></p> </h4>
+						<h1>--------</h1> <form action='/comment/<%=posts[x].comments[i].id%>' method='post'>
+						<input type="submit" class ='delete_comment_button btn btn-danger' value='Delete this comment.'>
+					</form>
+					</div> 
+				<% } %>
+	
+
+
+				<label for=""> Leave a comment on this post:</label>
+				<div id ='new_comment<%=posts[x].id %>'>
+				<form action="/posts/<%=posts[x].id %>" method ='post' role='form'>
+					<label for="name" class='red_comment' >Name:</label><br>
+					<input type="text" name='comment_name' class='form-control commentName' id='comment_name_input<%=posts[x].id %>'> <br>
+					<label for="comment" class ='red_comment  <%=posts[x].id %>'>Comment:</label> <br>
+					<textarea name="comment_comment" id="comment_comment_input<%=posts[x].id %>" cols="60" rows="10" class='form-control'></textarea> <br>
+					<input type="submit" value = 'Submit Comment' name="" id="">
+
+
+				</form> 
+				</div>
+			</div> <br> <br>
+				<% } %>
+
+
+
+</body>
+</html>
